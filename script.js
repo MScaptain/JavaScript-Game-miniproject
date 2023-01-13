@@ -4,7 +4,7 @@ let gold=50;
 let currentWeapon=0;
 let fightning;
 let monsterhealth;
-let inventory = ["stick"];
+let inventory = [];
 const button1 = document.querySelector('#button1');
 const button2 = document.querySelector('#button2');
 const button3 = document.querySelector('#button3');
@@ -27,7 +27,19 @@ const locations = [
     "button text": ["buy 10 health(10 gold)","buy 10 weapon(30 gold)","got to town square"],
     "button function":[buyhealth, buyweapon, gotown],
     text: "Entered in store"
-  }
+  },
+  {
+		name: "cave",
+		"button text": ["Fight slime", "Fight beast", "Go to town"],
+		"button functions": [fightslime, fightbeast, gotown],
+		text: "You enter the cave. You see some monsters."
+	},
+	{
+		name: "fight",
+		"button text": ["Attack", "Dodge", "Run"],
+		"button functions": [attack, dodge, gotown],
+		text: "You are fighting a monster."
+	}
 ]
 
 const weapon = [
@@ -48,12 +60,48 @@ const weapon = [
     power:100
   }
 ]
+
+const monster=[
+  {
+    name: "slime",
+    level:2,
+    health:15
+  },
+  {
+    name: "beast",
+    level:8,
+    health:60
+  },
+  {
+    name: "dragon",
+    level:20,
+    health:300
+  }
+]
 //initialize button
 
 button1.onclick = goStore;
 button2.onclick = goCave;
 button3.onclick = fightVillain;
 
+function update(locations) {
+  button1.innerText = locations["button text"][0];
+  button2.innerText = locations["button text"][1];
+  button3.innerText = locations["button text"][2];
+  button1.onclick = locations["button function"][0];
+  button2.onclick = locations["button function"][1];
+  button3.onclick = locations["button function"][2];
+  text.innerText = locations.text;
+}
+function gotown() {
+update(locations[0]);
+}
+function goCave() {
+  update(locations[2]);
+}
+function fightVillain() {
+  console.log("fighting villain")
+}
 function goStore() {
   update(locations[01]);
 }
@@ -87,31 +135,39 @@ function buyweapon() {
 		button2.onclick = sellWeapon;
 	}
 }
+function sellweapon() {
+	if (inventory.length > 1) {
+		gold += 15;
+		goldText.innerText = gold;
+        let currentWeapon = inventory.shift();
+        text.innerText = "You sold a " + currentWeapon + ".";
+        text.innerText += " In your inventory you have: " + inventory;
+	} else {
+    	text.innerText = "Don't sell your only weapon!";
+  	}
+}
 
-function swllweapon() {
-if(inventory.length>1){
-  gold+=15;
-  goldText.innerText=gold;
-  let currentWeapon = inventory.shift();
-  text.innerText="You have a " +currentWeapon+ ".";
-  text.innerText="You have a " +inventory;
-}  
+function fightslime() {
+  fightning = 0;
+  gofight();
 }
-function update(locations) {
-  button1.innerText = locations["button text"][0];
-  button2.innerText = locations["button text"][1];
-  button3.innerText = locations["button text"][2];
-  button1.onclick = locations["button function"][0];
-  button2.onclick = locations["button function"][1];
-  button3.onclick = locations["button function"][2];
-  text.innerText = locations.text;
+function fightbeast() {
+fightning = 1;
+  gofight();
 }
-function gotown() {
-update(locations[0]);
+function fightdragon() {
+ fightning = 2;
+  gofight();
 }
-function goCave() {
-  console.log("Going to Cave")
+function gofight() {
+ 
 }
-function fightVillain() {
-  console.log("fighting villain")
+function attack() {
+ 
 }
+function dodge() {
+ 
+}
+// function gofight() {
+ 
+// }
